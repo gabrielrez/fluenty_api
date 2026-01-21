@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LessonUserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,6 +16,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'sequence',
+        'avatar',
     ];
 
     protected $hidden = [
@@ -27,6 +30,33 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'sequence' => 'integer',
         ];
+    }
+
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class)
+            ->withPivot('status', 'completed_at')
+            ->withTimestamps();
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class, 'user_languages')
+            ->withPivot('level')
+            ->withTimestamps();
+    }
+
+    public function completedLessons()
+    {
+        return $this->lessons()
+            ->wherePivot('status', LessonUserStatus::Completed->value);
+    }
+
+    public function inProgressLessons()
+    {
+        return $this->lessons()
+            ->wherePivot('status', LessonUserStatus::InProgress->value);
     }
 }
