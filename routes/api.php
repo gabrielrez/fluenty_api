@@ -17,6 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/check', fn() => response()->json(true));
 
     Route::get('/lessons', [LessonController::class, 'index']);
+    Route::post('/lessons/{lesson}/start', [LessonController::class, 'start']);
+    Route::post('/lessons/{lesson}/toggle-complete', [LessonController::class, 'toggleComplete']);
 
     Route::get('/users/profile', [UserController::class, 'profile']);
 });
