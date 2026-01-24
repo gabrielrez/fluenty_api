@@ -41,22 +41,13 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    public function languages()
-    {
-        return $this->belongsToMany(Language::class, 'user_languages')
-            ->withPivot('level')
-            ->withTimestamps();
-    }
-
     public function completedLessons()
     {
-        return $this->lessons()
-            ->wherePivot('status', LessonUserStatus::Completed->value);
+        return $this->lessons()->wherePivot('status', LessonUserStatus::Completed->value);
     }
 
     public function inProgressLessons()
     {
-        return $this->lessons()
-            ->wherePivot('status', LessonUserStatus::InProgress->value);
+        return $this->lessons()->wherePivot('status', LessonUserStatus::InProgress->value);
     }
 }

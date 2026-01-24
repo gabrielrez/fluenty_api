@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LessonResource;
 use App\Services\LessonService;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,8 @@ class LessonController extends Controller
 
     public function index(Request $request)
     {
-        return $this->respond(
+        return $this->respond(LessonResource::collection(
             $this->lessonService->filter($request)
-        );
+        ));
     }
 }

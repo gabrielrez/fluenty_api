@@ -20,7 +20,6 @@ return new class extends Migration
             $table->longText('translation');
             $table->string('audio_url');
             $table->unsignedInteger('duration');
-            $table->foreignIdFor(Language::class);
             $table->foreignIdFor(Category::class);
             $table->timestamps();
         });

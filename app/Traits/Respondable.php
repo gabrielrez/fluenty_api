@@ -5,6 +5,8 @@ namespace App\Traits;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 trait Respondable
 {
@@ -19,6 +21,10 @@ trait Respondable
      */
     public function respond(mixed $data, int $status = 200, array $headers = []): JsonResponse
     {
+        if ($data instanceof JsonResource || $data instanceof ResourceCollection) {
+            return $data->response()->setStatusCode($status);
+        }
+
         if ($data instanceof LengthAwarePaginator || $data instanceof Paginator) {
             return response()->json($data, $status, $headers);
         }
