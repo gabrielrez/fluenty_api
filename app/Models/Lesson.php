@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\LessonLevelEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Lesson extends Model
 {
@@ -14,12 +14,14 @@ class Lesson extends Model
         'audio_url',
         'duration',
         'category_id',
+        'level',
     ];
 
     protected function casts(): array
     {
         return [
             'duration' => 'integer',
+            'level' => LessonLevelEnum::class,
         ];
     }
 

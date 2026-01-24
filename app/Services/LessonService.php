@@ -19,6 +19,10 @@ class LessonService
             'users' => fn($q) => $q->where('user_id', $user_id),
         ]);
 
+        if ($request->has('level')) {
+            $lessons->where('level', $request->level);
+        }
+
         if ($request->boolean('only_started')) {
             $lessons->whereHas('users', fn($q) => $q->where('user_id', $user_id));
         }

@@ -17,12 +17,13 @@ class LessonResource extends JsonResource
             'audio_url' => $this->audio_url,
             'text' => $this->text,
             'translation' => $this->translation,
+            'level' => $this->level,
 
             'category' => [
                 'id'   => $this->category->id,
                 'name' => $this->category->name,
             ],
-            
+
             'status'       => $user?->pivot?->status,
             'completed_at' => $user?->pivot?->completed_at,
         ];

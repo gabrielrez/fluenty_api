@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\LessonLevelEnum;
 use App\Models\Category;
 use App\Models\Language;
 use Illuminate\Database\Migrations\Migration;
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->longText('translation');
             $table->string('audio_url');
             $table->unsignedInteger('duration');
+            $table->string('level')->default(LessonLevelEnum::Beginner->value);
             $table->foreignIdFor(Category::class);
             $table->timestamps();
         });
