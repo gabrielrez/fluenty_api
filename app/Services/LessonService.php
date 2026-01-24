@@ -13,7 +13,7 @@ class LessonService
         $user = $request->user();
 
         $lessons = Lesson::query()
-            ->with(['language', 'progress']);
+            ->with(['language', 'progress', 'category']);
 
         if ($request->has('language')) {
             $lessons->byLanguage($request->language);
@@ -27,6 +27,10 @@ class LessonService
             $lessons->whereHas('users', fn($q) => $q
                 ->where('users.id', $user->id)
                 ->where('lesson_user.status', $request->status));
+        }
+
+        if ($request->has('category')) {
+            $lessons->whereHas('category', fn($q) => $q->where('name', $request->category));
         }
 
         return $lessons->paginate(
