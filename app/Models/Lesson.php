@@ -38,4 +38,44 @@ class Lesson extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeByLevel($query, $level)
+    {
+        return $query->when(
+            $level,
+            fn($q) => $q->where('level', $level)
+        );
+    }
+
+    public function scopeByCategory($query, $category_id)
+    {
+        return $query->when(
+            $category_id,
+            fn($q) => $q->where('category_id', $category_id)
+        );
+    }
+
+    public function scopeOnlyStarted($query, bool $only_started, ?int $user_id)
+    {
+        return $query->when(
+            $only_started && $user_id,
+            fn($q) => $q->whereHas(
+                'users',
+                fn($q) => $q->where('user_id', $user_id)
+            )
+        );
+    }
+
+    public function scopeByStudyStatus($query, ?string $status, ?int $user_id)
+    {
+        return $query->when(
+            $status && $user_id,
+            fn($q) => $q->whereHas(
+                'users',
+                fn($q) => $q
+                    ->where('user_id', $user_id)
+                    ->wherePivot('status', $status)
+            )
+        );
+    }
 }
