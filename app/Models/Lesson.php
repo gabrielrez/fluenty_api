@@ -9,8 +9,10 @@ class Lesson extends Model
 {
     protected $fillable = [
         'title',
+        'description',
         'text',
         'translation',
+        'image_url',
         'audio_url',
         'duration',
         'category_id',

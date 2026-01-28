@@ -17,8 +17,10 @@ return new class extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('description')->nullable();
             $table->longText('text');
             $table->longText('translation');
+            $table->string('image_url')->nullable();
             $table->string('audio_url');
             $table->unsignedInteger('duration');
             $table->string('level')->default(LessonLevelEnum::Beginner->value);
