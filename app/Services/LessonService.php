@@ -22,6 +22,7 @@ class LessonService
             ->byCategory($request->get('category'))
             ->onlyStarted($request->boolean('only_started'), $user_id)
             ->byStudyStatus($request->get('status'), $user_id)
+            ->bySearch($request->get('search'))
             ->paginate($request->integer('per_page', 12));
     }
 

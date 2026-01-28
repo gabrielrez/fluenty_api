@@ -78,4 +78,14 @@ class Lesson extends Model
             )
         );
     }
+
+    public function scopeBySearch($query, ?string $search)
+    {
+        return $query->when(
+            $search,
+            fn($q) => $q
+                ->where('title', 'like', "%{$search}%")
+                ->orWhere('text', 'description', 'like', "%{$search}%")
+        );
+    }
 }
