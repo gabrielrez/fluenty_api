@@ -12,12 +12,7 @@ class AuthController extends Controller
 {
     public function register(RegisterUserRequest $request)
     {
-        $validated = $request->validated();
-
-        $user = User::create([
-            ...$validated,
-            'password' => Hash::make($validated['password'])
-        ]);
+        $user = User::create($request->validated());
 
         return $this->respondCreated([
             'user' => $user,
