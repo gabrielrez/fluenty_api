@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,8 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/check', fn() => response()->json(true));
+
+    Route::get('/categories', [CategoryController::class, 'index']);
 
     Route::get('/lessons', [LessonController::class, 'index']);
     Route::post('/lessons/{lesson}/start', [LessonController::class, 'start']);
