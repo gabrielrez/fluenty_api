@@ -66,16 +66,24 @@ class Lesson extends Model
         );
     }
 
+    public function scopeNotStarted($query, bool $not_started, ?int $user_id)
+    {
+        return $query->when(
+            $not_started && $user_id,
+            fn($q) => $q->whereDoesntHave('users', function ($q) use ($user_id) {
+                $q->where('users.id', $user_id);
+            })
+        );
+    }
+
     public function scopeByStudyStatus($query, ?string $status, ?int $user_id)
     {
         return $query->when(
             $status && $user_id,
-            fn($q) => $q->whereHas(
-                'users',
-                fn($q) => $q
-                    ->where('user_id', $user_id)
-                    ->wherePivot('status', $status)
-            )
+            fn($q) => $q->whereHas('users', function ($q) use ($user_id, $status) {
+                $q->where('users.id', $user_id)
+                    ->where('lesson_user.status', $status);
+            })
         );
     }
 
