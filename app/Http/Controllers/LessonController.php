@@ -24,6 +24,11 @@ class LessonController extends Controller
         ));
     }
 
+    public function show(Lesson $lesson)
+    {
+        return $this->respond(new LessonResource($lesson));
+    }
+
     public function start(Request $request, Lesson $lesson)
     {
         $this->lessonService->start($request->user(), $lesson);
