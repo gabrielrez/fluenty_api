@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\LessonLevelEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
@@ -37,6 +38,13 @@ class Lesson extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function text(): Attribute
+    {
+        return Attribute::make(
+            get: fn($text) => str_replace('\\n', "\n", $text)
+        );
     }
 
     public function scopeByLevel($query, $level)
