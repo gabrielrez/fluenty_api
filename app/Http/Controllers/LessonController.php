@@ -33,19 +33,24 @@ class LessonController extends Controller
     {
         $this->lessonService->start($request->user(), $lesson);
 
-        return $this->respond('Lesson started');
+        return $this->respond([
+            'status' => LessonUserStatus::InProgress->value,
+        ]);
     }
 
     public function toggleComplete(Request $request, Lesson $lesson)
     {
-        $user = $request->user();
-
-        $completed = $this->lessonService->toggleComplete($user, $lesson);
-
-        return $this->respond(
-            $completed
-                ? 'Lesson completed'
-                : 'Lesson uncompleted'
+        $completed = $this->lessonService->toggleComplete(
+            $request->user(),
+            $lesson
         );
+
+        return response()->json([
+            'completed' => $completed,
+            'status' => $completed ? 'completed' : 'in_progress',
+            'message' => $completed
+                ? 'Lesson completed'
+                : 'Lesson marked as in progress',
+        ]);
     }
 }

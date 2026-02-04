@@ -63,33 +63,33 @@ class Lesson extends Model
         );
     }
 
-    public function scopeOnlyStarted($query, bool $only_started, ?int $user_id)
+    public function scopeOnlyStarted($query, bool $only_started, ?User $user)
     {
         return $query->when(
-            $only_started && $user_id,
+            $only_started && $user,
             fn($q) => $q->whereHas(
                 'users',
-                fn($q) => $q->where('user_id', $user_id)
+                fn($q) => $q->where('user_id', $user->id)
             )
         );
     }
 
-    public function scopeNotStarted($query, bool $not_started, ?int $user_id)
+    public function scopeNotStarted($query, bool $not_started, ?User $user)
     {
         return $query->when(
-            $not_started && $user_id,
-            fn($q) => $q->whereDoesntHave('users', function ($q) use ($user_id) {
-                $q->where('users.id', $user_id);
+            $not_started && $user,
+            fn($q) => $q->whereDoesntHave('users', function ($q) use ($user) {
+                $q->where('users.id', $user->id);
             })
         );
     }
 
-    public function scopeByStudyStatus($query, ?string $status, ?int $user_id)
+    public function scopeByStudyStatus($query, ?string $status, ?User $user)
     {
         return $query->when(
-            $status && $user_id,
-            fn($q) => $q->whereHas('users', function ($q) use ($user_id, $status) {
-                $q->where('users.id', $user_id)
+            $status && $user,
+            fn($q) => $q->whereHas('users', function ($q) use ($user, $status) {
+                $q->where('users.id', $user->id)
                     ->where('lesson_user.status', $status);
             })
         );
@@ -99,9 +99,25 @@ class Lesson extends Model
     {
         return $query->when(
             $search,
+            fn($q) => $q->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('text', 'like', "%{$search}%");
+            })
+        );
+    }
+
+    public function scopeOrderByUserLatestProgress($query, bool $latest, ?User $user)
+    {
+        return $query->when(
+            $latest && $user,
             fn($q) => $q
-                ->where('title', 'like', "%{$search}%")
-                ->orWhere('text', 'description', 'like', "%{$search}%")
+                ->join('lesson_user', function ($join) use ($user) {
+                    $join->on('lessons.id', '=', 'lesson_user.lesson_id')
+                        ->where('lesson_user.user_id', $user->id);
+                })
+                ->orderByDesc('lesson_user.created_at')
+                ->select('lessons.*')
         );
     }
 }

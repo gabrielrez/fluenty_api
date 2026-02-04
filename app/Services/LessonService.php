@@ -11,26 +11,29 @@ class LessonService
 {
     public function filter(Request $request)
     {
-        $user_id = $request->user() instanceof User
-            ? $request->user()->id
-            : $request->get('user_id', null);
+        $user = $request->user();
 
         return Lesson::query()
             ->with('category')
-            ->with(['users' => fn($q) => $q->where('user_id', $user_id)])
+            ->with(['users' => fn($q) => $q->where('user_id', $user->id)])
             ->byLevel($request->get('level'))
             ->byCategory($request->get('category'))
-            ->onlyStarted($request->boolean('only_started'), $user_id)
-            ->notStarted($request->boolean('not_started'), $user_id)
-            ->byStudyStatus($request->get('status'), $user_id)
+            ->onlyStarted($request->boolean('only_started'), $user)
+            ->notStarted($request->boolean('not_started'), $user)
+            ->byStudyStatus($request->get('status'), $user)
             ->bySearch($request->get('search'))
+            ->orderByUserLatestProgress($request->boolean('latest'), $user)
             ->paginate($request->integer('per_page', 12));
     }
 
-    public function start(User $user, Lesson $lesson)
+    public function start(User $user, Lesson $lesson): void
     {
-        if ($user->lessons()->where('lesson_id', $lesson->id)->exists()) {
-            return abort('409', 'Lesson already started');
+        $user_lesson = $user->lessons()
+            ->where('lesson_id', $lesson->id)
+            ->first();
+
+        if ($user_lesson && $user_lesson->pivot->status === LessonUserStatus::Completed->value) {
+            return;
         }
 
         $user->lessons()->syncWithoutDetaching([
@@ -41,25 +44,23 @@ class LessonService
         ]);
     }
 
-    public function toggleComplete(User $user, Lesson $lesson)
+    public function toggleComplete(User $user, Lesson $lesson): bool
     {
-        $pivot = $user->lessons()
+        $user_lesson = $user->lessons()
             ->where('lesson_id', $lesson->id)
-            ->first()?->pivot;
+            ->firstOrFail();
 
-        if (!$pivot) {
-            abort('409', 'Lesson not started');
-        }
+        $is_currently_completed = $user_lesson->pivot->status === LessonUserStatus::Completed->value;
 
-        $is_completed = $pivot->status === LessonUserStatus::Completed->value;
+        $new_status = $is_currently_completed
+            ? LessonUserStatus::InProgress
+            : LessonUserStatus::Completed;
 
         $user->lessons()->updateExistingPivot($lesson->id, [
-            'status' => $is_completed
-                ? LessonUserStatus::InProgress->value
-                : LessonUserStatus::Completed->value,
-            'completed_at' => $is_completed ? null : now(),
+            'status' => $new_status->value,
+            'completed_at' => $new_status === LessonUserStatus::Completed ? now() : null,
         ]);
 
-        return !$is_completed;
+        return $new_status === LessonUserStatus::Completed;
     }
 }
