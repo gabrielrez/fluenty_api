@@ -22,6 +22,17 @@ services:
             - sail
         depends_on:
             - mysql
+            - libretranslate
+    libretranslate:
+      image: libretranslate/libretranslate:latest
+      container_name: libretranslate
+      ports:
+          - "5000:5000"
+      environment:
+          LT_LOAD_ONLY: en,pt,es
+          LT_DISABLE_WEB_UI: true
+      networks:
+          - sail
     mysql:
         image: 'mysql:8.4'
         ports:
