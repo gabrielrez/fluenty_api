@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', fn() => response()->json('pong'));
@@ -13,6 +14,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
+
+Route::post('/words/translate', [WordController::class, 'translate']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/check', fn() => response()->json(true));
