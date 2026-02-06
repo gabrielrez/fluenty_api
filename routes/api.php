@@ -27,5 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/lessons/{lesson}/start', [LessonController::class, 'start']);
     Route::post('/lessons/{lesson}/toggle-complete', [LessonController::class, 'toggleComplete']);
 
+    Route::get('/words/{word}', [WordController::class, 'show']);
+    Route::post('/words/toggle', [WordController::class, 'toggleSave']);
+
     Route::get('/users/profile', [UserController::class, 'profile']);
 });

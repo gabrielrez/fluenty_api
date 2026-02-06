@@ -28,11 +28,11 @@ class LessonService
 
     public function start(User $user, Lesson $lesson): void
     {
-        $user_lesson = $user->lessons()
+        $userLesson = $user->lessons()
             ->where('lesson_id', $lesson->id)
             ->first();
 
-        if ($user_lesson && $user_lesson->pivot->status === LessonUserStatus::Completed->value) {
+        if ($userLesson && $userLesson->pivot->status === LessonUserStatus::Completed->value) {
             return;
         }
 
@@ -46,21 +46,21 @@ class LessonService
 
     public function toggleComplete(User $user, Lesson $lesson): bool
     {
-        $user_lesson = $user->lessons()
+        $userLesson = $user->lessons()
             ->where('lesson_id', $lesson->id)
             ->firstOrFail();
 
-        $is_currently_completed = $user_lesson->pivot->status === LessonUserStatus::Completed->value;
+        $isCurrentlyCompleted = $userLesson->pivot->status === LessonUserStatus::Completed->value;
 
-        $new_status = $is_currently_completed
+        $newStatus = $isCurrentlyCompleted
             ? LessonUserStatus::InProgress
             : LessonUserStatus::Completed;
 
         $user->lessons()->updateExistingPivot($lesson->id, [
-            'status' => $new_status->value,
-            'completed_at' => $new_status === LessonUserStatus::Completed ? now() : null,
+            'status' => $newStatus->value,
+            'completed_at' => $newStatus === LessonUserStatus::Completed ? now() : null,
         ]);
 
-        return $new_status === LessonUserStatus::Completed;
+        return $newStatus === LessonUserStatus::Completed;
     }
 }

@@ -51,6 +51,11 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function savedWords()
+    {
+        return $this->hasMany(SavedWord::class);
+    }
+
     public function completedLessons()
     {
         return $this->lessons()->wherePivot('status', LessonUserStatus::Completed->value);
