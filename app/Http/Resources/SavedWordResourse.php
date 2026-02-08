@@ -16,6 +16,7 @@ class SavedWordResourse extends JsonResource
             'translation' => $this->translation,
             'context' => $this->context,
             'created_at' => $this->created_at,
+            'lesson' => $this->lesson,
         ];
     }
 }

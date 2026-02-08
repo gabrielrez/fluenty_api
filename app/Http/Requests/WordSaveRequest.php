@@ -12,6 +12,7 @@ class WordSaveRequest extends FormRequest
             'word' => 'required|string',
             'context' => 'required|string',
             'translation' => 'required|string',
+            'lesson_id' => 'required|integer|exists:lessons,id',
         ];
     }
 }

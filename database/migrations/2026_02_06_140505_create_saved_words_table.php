@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->string('word');
             $table->string('context');
             $table->string('translation');
+            $table->foreignIdFor(Lesson::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
             $table->timestamps();
         });

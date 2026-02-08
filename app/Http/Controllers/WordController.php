@@ -22,6 +22,7 @@ class WordController extends Controller
     {
         $words = $request->user()
             ->savedWords()
+            ->with('lesson')
             ->get();
 
         return $this->respond(SavedWordResourse::collection($words));

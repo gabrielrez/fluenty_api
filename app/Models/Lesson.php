@@ -40,6 +40,11 @@ class Lesson extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function savedWords()
+    {
+        return $this->hasMany(SavedWord::class);
+    }
+
     public function text(): Attribute
     {
         return Attribute::make(
