@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WordSaveRequest;
 use App\Http\Requests\WordTranslateRequest;
+use App\Http\Resources\SavedWordResourse;
+use App\Models\SavedWord;
 use App\Services\WordService;
 use Illuminate\Http\Request;
 
@@ -14,6 +16,15 @@ class WordController extends Controller
     public function __construct(WordService $wordService)
     {
         $this->wordService = $wordService;
+    }
+
+    public function index(Request $request)
+    {
+        $words = $request->user()
+            ->savedWords()
+            ->get();
+
+        return $this->respond(SavedWordResourse::collection($words));
     }
 
     public function show(Request $request, string $word)
@@ -42,6 +53,24 @@ class WordController extends Controller
         return $this->respond([
             'translation' => $translation,
         ]);
+    }
+
+    public function store(WordSaveRequest $request)
+    {
+        $request->user()
+            ->savedWords()
+            ->firstOrCreate($request->validated());
+
+        return $this->respond('Word saved');
+    }
+
+    public function delete(SavedWord $savedWord)
+    {
+        $this->authorize('delete', $savedWord);
+
+        $savedWord->delete();
+
+        return $this->respond('Word removed');
     }
 
     public function toggleSave(WordSaveRequest $request)

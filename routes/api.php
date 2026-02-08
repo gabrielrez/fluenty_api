@@ -27,8 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/lessons/{lesson}/start', [LessonController::class, 'start']);
     Route::post('/lessons/{lesson}/toggle-complete', [LessonController::class, 'toggleComplete']);
 
-    Route::get('/words/{word}', [WordController::class, 'show']);
+    Route::get('/words', [WordController::class, 'index']);
+    Route::get('/words/{savedWord}', [WordController::class, 'show']);
     Route::post('/words/toggle', [WordController::class, 'toggleSave']);
+    Route::post('/words/save', [WordController::class, 'store']);
+    Route::delete('/words/{savedWord}', [WordController::class, 'delete']);
 
     Route::get('/users/profile', [UserController::class, 'profile']);
 });
