@@ -32,6 +32,7 @@ class WordController extends Controller
         $savedWord = $request->user()
             ->savedWords()
             ->where('word', $word)
+            ->where('context', $request->context)
             ->first();
 
         return $this->respond([
