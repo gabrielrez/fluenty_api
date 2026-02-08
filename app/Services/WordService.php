@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Adapters\LibreTranslateAPI;
 use App\Interfaces\TranslateInterface;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
 class WordService
 {
@@ -13,6 +13,15 @@ class WordService
     public function __construct(LibreTranslateAPI $translateAPI)
     {
         $this->translateAPI = $translateAPI;
+    }
+
+    public function filter(Request $request)
+    {
+        return $request->user()
+            ->savedWords()
+            ->with('lesson')
+            ->bySearch($request->get('search'))
+            ->get();
     }
 
     public function translate(string $text)

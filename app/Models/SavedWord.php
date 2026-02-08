@@ -26,4 +26,14 @@ class SavedWord extends Model
     {
         return $this->belongsTo(Lesson::class);
     }
+
+    public function scopeBySearch($query, ?string $search)
+    {
+        return $query->when(
+            $search,
+            fn($q) => $q->where(function ($q) use ($search) {
+                $q->where('word', 'like', "%{$search}%");
+            })
+        );
+    }
 }

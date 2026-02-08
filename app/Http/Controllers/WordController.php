@@ -20,12 +20,9 @@ class WordController extends Controller
 
     public function index(Request $request)
     {
-        $words = $request->user()
-            ->savedWords()
-            ->with('lesson')
-            ->get();
-
-        return $this->respond(SavedWordResourse::collection($words));
+        return $this->respond(SavedWordResourse::collection(
+            $this->wordService->filter($request)
+        ));
     }
 
     public function show(Request $request, string $word)
