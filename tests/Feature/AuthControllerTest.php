@@ -11,8 +11,6 @@ class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    // ==================== REGISTER ====================
-
     public function test_register_creates_user_and_returns_token(): void
     {
         $payload = [
@@ -111,8 +109,6 @@ class AuthControllerTest extends TestCase
             ->assertJsonValidationErrors(['password']);
     }
 
-    // ==================== LOGIN ====================
-
     public function test_login_returns_user_and_token(): void
     {
         User::factory()->create([
@@ -196,8 +192,6 @@ class AuthControllerTest extends TestCase
             ->assertJsonValidationErrors(['email']);
     }
 
-    // ==================== LOGOUT ====================
-
     public function test_logout_revokes_all_tokens(): void
     {
         $user = User::factory()->create();
@@ -219,8 +213,6 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(401);
     }
 
-    // ==================== AUTH CHECK ====================
-
     public function test_auth_check_returns_true_when_authenticated(): void
     {
         /** @var User $user */
@@ -238,8 +230,6 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(401);
     }
-
-    // ==================== TOKEN USAGE ====================
 
     public function test_register_token_can_access_protected_routes(): void
     {
