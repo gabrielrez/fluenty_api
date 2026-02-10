@@ -4,10 +4,13 @@ namespace App\Models;
 
 use App\Enums\LessonLevelEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'title',
         'description',
