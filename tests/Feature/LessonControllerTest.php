@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Enums\LessonLevelEnum;
 use App\Enums\LessonUserStatus;
 use App\Models\Category;
 use App\Models\Lesson;
@@ -92,8 +91,8 @@ class LessonControllerTest extends TestCase
 
     public function test_index_filters_by_search(): void
     {
-        
-    /** @var User $user */
+
+        /** @var User $user */
         $user = User::factory()->create();
         Lesson::factory()->create(['title' => 'Learning Laravel Basics']);
         Lesson::factory()->create(['title' => 'Advanced Vue.js']);

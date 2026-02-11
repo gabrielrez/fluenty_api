@@ -14,7 +14,7 @@ class SavedWordTest extends TestCase
 
     public function test_fillable_attributes(): void
     {
-        $savedWord = new SavedWord();
+        $savedWord = new SavedWord;
 
         $this->assertEquals(
             ['user_id', 'lesson_id', 'word', 'translation', 'context'],

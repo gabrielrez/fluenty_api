@@ -13,11 +13,9 @@ trait Respondable
     /**
      * Return a JSON response with the given data, status, and headers.
      *
-     * @param mixed $data    The response data to be returned as JSON.
-     * @param int   $status  The HTTP status code (default: 200).
-     * @param array $headers Additional headers for the response.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @param  mixed  $data  The response data to be returned as JSON.
+     * @param  int  $status  The HTTP status code (default: 200).
+     * @param  array  $headers  Additional headers for the response.
      */
     public function respond(mixed $data, int $status = 200, array $headers = []): JsonResponse
     {
@@ -41,10 +39,9 @@ trait Respondable
     /**
      * Return a JSON response for a successfully created resource.
      *
-     * @param mixed $data    The created resource data.
-     * @param int   $status  The HTTP status code (default: 201).
-     * @param array $headers Additional headers for the response.
-     *
+     * @param  mixed  $data  The created resource data.
+     * @param  int  $status  The HTTP status code (default: 201).
+     * @param  array  $headers  Additional headers for the response.
      * @return \Illuminate\Http\JsonResponse
      */
     public function respondCreated($data, $status = 201, $headers = [])
@@ -55,10 +52,9 @@ trait Respondable
     /**
      * Return a JSON response for a successfully updated resource.
      *
-     * @param mixed $data    The updated resource data.
-     * @param int   $status  The HTTP status code (default: 200).
-     * @param array $headers Additional headers for the response.
-     *
+     * @param  mixed  $data  The updated resource data.
+     * @param  int  $status  The HTTP status code (default: 200).
+     * @param  array  $headers  Additional headers for the response.
      * @return \Illuminate\Http\JsonResponse
      */
     public function respondUpdated($data, $status = 200, $headers = [])
@@ -72,10 +68,9 @@ trait Respondable
      * Note: By REST convention, the default status is 204 (No Content),
      * which usually does not return any body. But you can still pass $data if needed.
      *
-     * @param mixed $data    Additional response data (optional).
-     * @param int   $status  The HTTP status code (default: 204).
-     * @param array $headers Additional headers for the response.
-     *
+     * @param  mixed  $data  Additional response data (optional).
+     * @param  int  $status  The HTTP status code (default: 204).
+     * @param  array  $headers  Additional headers for the response.
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function respondDeleted($data = null, $status = 204, $headers = [])
@@ -90,9 +85,10 @@ trait Respondable
     /**
      * Throw a NotFoundException (HTTP 404).
      *
-     * @param string $message Error message.
-     * @throws \App\Exceptions\NotFoundException
+     * @param  string  $message  Error message.
      * @return never
+     *
+     * @throws \App\Exceptions\NotFoundException
      */
     public function failNotFound($message = 'Not Found')
     {
@@ -102,9 +98,10 @@ trait Respondable
     /**
      * Throw an UnauthorizedException (HTTP 401).
      *
-     * @param string $message Error message.
-     * @throws \App\Exceptions\UnauthorizedException
+     * @param  string  $message  Error message.
      * @return never
+     *
+     * @throws \App\Exceptions\UnauthorizedException
      */
     public function failUnauthorized($message = 'Unauthorized')
     {
@@ -114,9 +111,10 @@ trait Respondable
     /**
      * Throw a ForbiddenException (HTTP 403).
      *
-     * @param string $message Error message.
-     * @throws \App\Exceptions\ForbiddenException
+     * @param  string  $message  Error message.
      * @return never
+     *
+     * @throws \App\Exceptions\ForbiddenException
      */
     public function failForbidden($message = 'Forbidden')
     {
@@ -126,9 +124,10 @@ trait Respondable
     /**
      * Throw an UnprocessableEntityException (HTTP 422).
      *
-     * @param string $message Error message.
-     * @throws \App\Exceptions\UnprocessableEntityException
+     * @param  string  $message  Error message.
      * @return never
+     *
+     * @throws \App\Exceptions\UnprocessableEntityException
      */
     public function failUnprocessableEntity($message = 'Unprocessable Entity')
     {
@@ -138,7 +137,8 @@ trait Respondable
     /**
      * Throw a ConflictException (HTTP 409).
      *
-     * @param string $message Error message.
+     * @param  string  $message  Error message.
+     *
      * @throws \App\Exceptions\ConflictException
      */
     public function failConflict($message = 'Conflict')
@@ -149,9 +149,10 @@ trait Respondable
     /**
      * Throw a BadRequestException (HTTP 400).
      *
-     * @param string $message Error message.
-     * @throws \App\Exceptions\BadRequestException
+     * @param  string  $message  Error message.
      * @return never
+     *
+     * @throws \App\Exceptions\BadRequestException
      */
     public function failBadRequest($message = 'Bad Request')
     {

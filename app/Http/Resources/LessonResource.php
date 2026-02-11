@@ -11,8 +11,8 @@ class LessonResource extends JsonResource
         $user = $this->users->first();
 
         return [
-            'id'       => $this->id,
-            'title'    => $this->title,
+            'id' => $this->id,
+            'title' => $this->title,
             'duration' => $this->duration,
             'image_url' => $this->image_url,
             'audio_url' => $this->audio_url,
@@ -21,11 +21,11 @@ class LessonResource extends JsonResource
             'level' => $this->level,
 
             'category' => [
-                'id'   => $this->category->id,
+                'id' => $this->category->id,
                 'name' => $this->category->name,
             ],
 
-            'status'       => $user?->pivot?->status,
+            'status' => $user?->pivot?->status,
             'completed_at' => $user?->pivot?->completed_at,
         ];
     }

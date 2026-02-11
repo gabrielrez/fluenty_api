@@ -2,7 +2,6 @@
 
 use App\Enums\LessonLevelEnum;
 use App\Models\Category;
-use App\Models\Language;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

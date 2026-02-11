@@ -17,7 +17,7 @@ class LessonTest extends TestCase
 
     public function test_fillable_attributes(): void
     {
-        $lesson = new Lesson();
+        $lesson = new Lesson;
 
         $this->assertEquals(
             ['title', 'description', 'text', 'translation', 'image_url', 'audio_url', 'duration', 'category_id', 'level'],
@@ -27,7 +27,7 @@ class LessonTest extends TestCase
 
     public function test_casts_attributes(): void
     {
-        $lesson = new Lesson();
+        $lesson = new Lesson;
         $casts = $lesson->getCasts();
 
         $this->assertEquals('integer', $casts['duration']);

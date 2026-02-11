@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 
 class ConflictException extends Exception
 {
-    public function __construct(string $message = "Conflict")
+    public function __construct(string $message = 'Conflict')
     {
         parent::__construct($message);
     }

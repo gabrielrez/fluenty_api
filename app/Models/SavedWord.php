@@ -31,7 +31,7 @@ class SavedWord extends Model
     {
         return $query->when(
             $search,
-            fn($q) => $q->where(function ($q) use ($search) {
+            fn ($q) => $q->where(function ($q) use ($search) {
                 $q->where('word', 'like', "%{$search}%");
             })
         );

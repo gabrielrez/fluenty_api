@@ -13,7 +13,7 @@ class CategoryTest extends TestCase
 
     public function test_fillable_attributes(): void
     {
-        $category = new Category();
+        $category = new Category;
 
         $this->assertEquals(
             ['name', 'description'],

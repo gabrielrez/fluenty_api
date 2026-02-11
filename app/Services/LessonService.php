@@ -15,7 +15,7 @@ class LessonService
 
         return Lesson::query()
             ->with('category')
-            ->with(['users' => fn($q) => $q->where('user_id', $user->id)])
+            ->with(['users' => fn ($q) => $q->where('user_id', $user->id)])
             ->byLevel($request->get('level'))
             ->byCategory($request->get('category'))
             ->onlyStarted($request->boolean('only_started'), $user)

@@ -118,7 +118,7 @@ class WordControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->getJson("/api/words/hello?context=Hello, how are you?");
+            ->getJson('/api/words/hello?context=Hello, how are you?');
 
         $response->assertOk()
             ->assertJson([

@@ -9,7 +9,7 @@ class LibreTranslateAPI implements TranslateInterface
 {
     public function translate(string $text, ?string $source = 'en', ?string $target = 'pt')
     {
-        $response = Http::timeout(10)->post(config('services.libretranslate.url') . '/translate', [
+        $response = Http::timeout(10)->post(config('services.libretranslate.url').'/translate', [
             'q' => $text,
             'source' => $source,
             'target' => $target,

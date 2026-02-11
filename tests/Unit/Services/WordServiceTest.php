@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services;
 
 use App\Adapters\LibreTranslateAPI;
-use App\Models\Lesson;
 use App\Models\SavedWord;
 use App\Models\User;
 use App\Services\WordService;

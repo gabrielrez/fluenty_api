@@ -5,9 +5,9 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
-class ForbiddenException  extends Exception
+class ForbiddenException extends Exception
 {
-    public function __construct(string $message = "Forbidden")
+    public function __construct(string $message = 'Forbidden')
     {
         parent::__construct($message);
     }

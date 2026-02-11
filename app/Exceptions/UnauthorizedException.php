@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 
 class UnauthorizedException extends Exception
 {
-    public function __construct(string $message = "Unauthorized")
+    public function __construct(string $message = 'Unauthorized')
     {
         parent::__construct($message);
     }

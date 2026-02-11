@@ -23,7 +23,7 @@ class LessonServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->service = new LessonService();
+        $this->service = new LessonService;
     }
 
     public function test_filter_returns_paginated_lessons(): void

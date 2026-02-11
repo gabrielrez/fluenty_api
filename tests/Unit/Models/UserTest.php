@@ -16,7 +16,7 @@ class UserTest extends TestCase
 
     public function test_fillable_attributes(): void
     {
-        $user = new User();
+        $user = new User;
 
         $this->assertEquals(
             ['name', 'email', 'password', 'sequence', 'avatar'],
@@ -26,7 +26,7 @@ class UserTest extends TestCase
 
     public function test_hidden_attributes(): void
     {
-        $user = new User();
+        $user = new User;
 
         $this->assertEquals(
             ['password', 'remember_token'],
@@ -36,7 +36,7 @@ class UserTest extends TestCase
 
     public function test_casts_attributes(): void
     {
-        $user = new User();
+        $user = new User;
         $casts = $user->getCasts();
 
         $this->assertEquals('datetime', $casts['email_verified_at']);
