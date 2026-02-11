@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/lessons/{lesson}', [LessonController::class, 'show']);
     Route::post('/lessons/{lesson}/start', [LessonController::class, 'start']);
     Route::post('/lessons/{lesson}/toggle-complete', [LessonController::class, 'toggleComplete']);
+
+    Route::get('/statistics', [StatisticsController::class, 'index']);
 
     Route::get('/words', [WordController::class, 'index']);
     Route::get('/words/{word}', [WordController::class, 'show']);
