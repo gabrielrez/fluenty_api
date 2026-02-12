@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StatisticsResource;
 use App\Services\StatisticsService;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,8 @@ class StatisticsController extends Controller
             ->statisticsService
             ->calc($request->user());
 
-        return $this->respond([
-            'data' => $data,
-        ]);
+        return $this->respond(
+            new StatisticsResource($data)
+        );
     }
 }

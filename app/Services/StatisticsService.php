@@ -30,6 +30,7 @@ class StatisticsService
             'completed_lessons' => $lessonsCompleted,
             'words_saved' => $wordsSaved,
             'study_time' => $studyTime,
+            'sequence' => $user->sequence,
         ];
     }
 }
