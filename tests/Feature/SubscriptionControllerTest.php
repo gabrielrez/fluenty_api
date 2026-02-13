@@ -145,9 +145,11 @@ class SubscriptionControllerTest extends TestCase
     {
         $user = $this->createSubscribedUser();
 
+        config(['services.stripe.price_monthly' => 'price_monthly_test']);
+
         $response = $this->actingAs($user)
             ->postJson('/api/subscription/checkout', [
-                'price_id' => 'price_test_456',
+                'price_id' => 'price_monthly_test',
                 'success_url' => 'https://example.com/success',
                 'cancel_url' => 'https://example.com/cancel',
             ]);
