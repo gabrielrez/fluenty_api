@@ -13,6 +13,22 @@ class LessonControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function createSubscribedUser(): User
+    {
+        $user = User::factory()->create([
+            'stripe_id' => 'cus_test_'.uniqid(),
+        ]);
+
+        $user->subscriptions()->create([
+            'type' => 'default',
+            'stripe_id' => 'sub_test_'.uniqid(),
+            'stripe_status' => 'active',
+            'stripe_price' => 'price_test_123',
+        ]);
+
+        return $user;
+    }
+
     public function test_index_returns_paginated_lessons(): void
     {
         /** @var User $user */
@@ -211,8 +227,7 @@ class LessonControllerTest extends TestCase
 
     public function test_show_returns_single_lesson(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
         $response = $this->actingAs($user)
@@ -250,8 +265,7 @@ class LessonControllerTest extends TestCase
 
     public function test_show_returns_404_for_nonexistent_lesson(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
 
         $response = $this->actingAs($user)
             ->getJson('/api/lessons/99999');
@@ -261,8 +275,7 @@ class LessonControllerTest extends TestCase
 
     public function test_start_marks_lesson_as_in_progress(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
         $response = $this->actingAs($user)
@@ -282,8 +295,7 @@ class LessonControllerTest extends TestCase
 
     public function test_start_does_not_revert_completed_lesson(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
         $user->lessons()->attach($lesson->id, [
@@ -305,8 +317,7 @@ class LessonControllerTest extends TestCase
 
     public function test_start_is_idempotent_for_in_progress_lesson(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
         $user->lessons()->attach($lesson->id, [
@@ -335,8 +346,7 @@ class LessonControllerTest extends TestCase
 
     public function test_start_returns_404_for_nonexistent_lesson(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
 
         $response = $this->actingAs($user)
             ->postJson('/api/lessons/99999/start');
@@ -346,8 +356,7 @@ class LessonControllerTest extends TestCase
 
     public function test_toggle_complete_marks_in_progress_lesson_as_completed(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
         $user->lessons()->attach($lesson->id, [
@@ -373,8 +382,7 @@ class LessonControllerTest extends TestCase
 
     public function test_toggle_complete_reverts_completed_lesson_to_in_progress(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
         $user->lessons()->attach($lesson->id, [
@@ -401,8 +409,7 @@ class LessonControllerTest extends TestCase
 
     public function test_toggle_complete_fails_when_lesson_not_started(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
         $response = $this->actingAs($user)
@@ -422,8 +429,7 @@ class LessonControllerTest extends TestCase
 
     public function test_toggle_complete_returns_404_for_nonexistent_lesson(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
+        $user = $this->createSubscribedUser();
 
         $response = $this->actingAs($user)
             ->postJson('/api/lessons/99999/toggle-complete');
