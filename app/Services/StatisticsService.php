@@ -10,7 +10,7 @@ class StatisticsService
 {
     public function calc(User $user): array
     {
-        $percentProgress = ($user->lessons()->count() / Lesson::count()) * 100;
+        $percentProgress = ($user->completedLessons()->count() / Lesson::count()) * 100;
 
         $lessonsCompleted = $user
             ->completedLessons()
