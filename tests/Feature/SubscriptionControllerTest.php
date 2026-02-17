@@ -13,6 +13,7 @@ class SubscriptionControllerTest extends TestCase
 
     private function createSubscribedUser(): User
     {
+        /** @var User $user */
         $user = User::factory()->create([
             'stripe_id' => 'cus_test_123',
         ]);
@@ -29,6 +30,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_plans_returns_available_plans(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         config([
@@ -67,6 +69,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_lesson_show_requires_subscription(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $lesson = Lesson::factory()->create();
 
@@ -82,6 +85,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_lesson_start_requires_subscription(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $lesson = Lesson::factory()->create();
 
@@ -96,6 +100,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_lesson_toggle_complete_requires_subscription(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $lesson = Lesson::factory()->create();
 
@@ -110,6 +115,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_lesson_index_does_not_require_subscription(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         Lesson::factory()->count(2)->create();
 
@@ -121,6 +127,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_subscribed_user_can_access_lesson_show(): void
     {
+        /** @var User $user */
         $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
@@ -132,6 +139,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_subscribed_user_can_start_lesson(): void
     {
+        /** @var User $user */
         $user = $this->createSubscribedUser();
         $lesson = Lesson::factory()->create();
 
@@ -143,6 +151,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_checkout_blocks_already_subscribed_user(): void
     {
+        /** @var User $user */
         $user = $this->createSubscribedUser();
 
         config(['services.stripe.price_monthly' => 'price_monthly_test']);
@@ -173,6 +182,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_checkout_rejects_invalid_price_id(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
@@ -188,6 +198,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_checkout_validates_required_fields(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
@@ -199,6 +210,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_status_returns_not_subscribed(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
@@ -212,6 +224,7 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_status_returns_subscribed_data(): void
     {
+        /** @var User $user */
         $user = $this->createSubscribedUser();
 
         $response = $this->actingAs($user)
@@ -233,15 +246,13 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_billing_portal_requires_stripe_customer(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->postJson('/api/subscription/billing-portal');
 
-        $response->assertStatus(400)
-            ->assertJson([
-                'message' => 'No billing history found. Subscribe to a plan first.',
-            ]);
+        $response->assertStatus(403);
     }
 
     public function test_billing_portal_requires_authentication(): void

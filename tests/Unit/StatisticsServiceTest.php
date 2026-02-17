@@ -65,7 +65,7 @@ class StatisticsServiceTest extends TestCase
         $this->assertEquals(0, $result['percent_progress']);
     }
 
-    public function test_calc_percent_progress_with_some_lessons_started(): void
+    public function test_calc_percent_progress_with_some_lessons_completed(): void
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -77,7 +77,7 @@ class StatisticsServiceTest extends TestCase
 
         $result = $this->service->calc($user);
 
-        $this->assertEquals(50, $result['percent_progress']);
+        $this->assertEquals(25, $result['percent_progress']);
     }
 
     public function test_calc_percent_progress_with_all_lessons_started(): void

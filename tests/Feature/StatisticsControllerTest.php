@@ -74,7 +74,7 @@ class StatisticsControllerTest extends TestCase
         $response = $this->actingAs($user)->getJson('/api/statistics');
 
         $response->assertOk();
-        $this->assertEquals(50, $response->json('data.percent_progress'));
+        $this->assertEquals(25, $response->json('data.percent_progress'));
     }
 
     public function test_statistics_returns_correct_completed_lessons(): void
