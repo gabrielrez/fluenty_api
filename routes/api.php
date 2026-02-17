@@ -30,12 +30,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/lessons/{lesson}', [LessonController::class, 'show']);
         Route::post('/lessons/{lesson}/start', [LessonController::class, 'start']);
         Route::post('/lessons/{lesson}/toggle-complete', [LessonController::class, 'toggleComplete']);
+        Route::post('/subscription/billing-portal', [SubscriptionController::class, 'billingPortal']);
     });
 
     Route::get('/subscription/plans', [SubscriptionController::class, 'plans']);
     Route::post('/subscription/checkout', [SubscriptionController::class, 'checkout']);
     Route::get('/subscription/status', [SubscriptionController::class, 'status']);
-    Route::post('/subscription/billing-portal', [SubscriptionController::class, 'billingPortal']);
 
     Route::get('/statistics', [StatisticsController::class, 'index']);
 

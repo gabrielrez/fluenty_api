@@ -8,7 +8,9 @@ class LessonResource extends JsonResource
 {
     public function toArray($request)
     {
-        $user = $this->users->first();
+        $authUserId = $request->user()?->id;
+
+        $pivot = $this->users->firstWhere('id', $authUserId)?->pivot;
 
         return [
             'id' => $this->id,
@@ -25,8 +27,8 @@ class LessonResource extends JsonResource
                 'name' => $this->category->name,
             ],
 
-            'status' => $user?->pivot?->status,
-            'completed_at' => $user?->pivot?->completed_at,
+            'status' => $pivot?->status,
+            'completed_at' => $pivot?->completed_at,
         ];
     }
 }
