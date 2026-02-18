@@ -18,4 +18,24 @@ class UserLoginRequest extends FormRequest
             'password' => ['required', 'string'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'O e-mail é obrigatório.',
+            'email.string' => 'O e-mail deve ser um texto.',
+            'email.email' => 'Informe um e-mail válido.',
+
+            'password.required' => 'A senha é obrigatória.',
+            'password.string' => 'A senha deve ser um texto.',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'email' => 'e-mail',
+            'password' => 'senha',
+        ];
+    }
 }
