@@ -27,6 +27,8 @@ class LessonResource extends JsonResource
                 'name' => $this->category->name,
             ],
 
+            'source' => $this->source,
+
             'status' => $pivot?->status,
             'completed_at' => $pivot?->completed_at,
         ];

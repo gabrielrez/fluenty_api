@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('audio_url');
             $table->unsignedInteger('duration');
             $table->string('level')->default(LessonLevelEnum::Beginner->value);
+            $table->string('source');
             $table->foreignIdFor(Category::class);
             $table->timestamps();
         });

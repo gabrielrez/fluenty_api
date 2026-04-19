@@ -10,14 +10,7 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'viagem',
-            'cotidiano',
-            'negócios & carreira',
-            'tecnologia',
-            'educação & conhecimento geral',
-            'arte & cultura',
-            'histórias',
-            'história & sociedade',
+            'fiction'
         ];
 
         foreach ($categories as $category) {
