@@ -18,6 +18,7 @@ class LessonService
             ->with(['users' => fn ($q) => $q->where('user_id', $user->id)])
             ->byLevel($request->get('level'))
             ->byCategory($request->get('category'))
+            ->isFree($request->hasAny('is_free') ? $request->boolean('is_free') : null)
             ->onlyStarted($request->boolean('only_started'), $user)
             ->notStarted($request->boolean('not_started'), $user)
             ->byStudyStatus($request->get('status'), $user)

@@ -30,6 +30,7 @@ class LessonResource extends JsonResource
             'source' => $this->source,
 
             'status' => $pivot?->status,
+            'is_free' => $this->is_free,
             'completed_at' => $pivot?->completed_at,
         ];
     }

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('level')->default(LessonLevelEnum::Beginner->value);
             $table->string('source');
             $table->foreignIdFor(Category::class);
+            $table->boolean('is_free')->default(false);
             $table->timestamps();
         });
     }

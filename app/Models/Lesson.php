@@ -21,6 +21,8 @@ class Lesson extends Model
         'duration',
         'category_id',
         'level',
+        'source',
+        'is_free'
     ];
 
     protected function casts(): array
@@ -28,6 +30,7 @@ class Lesson extends Model
         return [
             'duration' => 'integer',
             'level' => LessonLevelEnum::class,
+            'is_free' => 'boolean'
         ];
     }
 
@@ -51,7 +54,7 @@ class Lesson extends Model
     public function text(): Attribute
     {
         return Attribute::make(
-            get: fn ($text) => str_replace('\\n', "\n", $text)
+            get: fn($text) => str_replace('\\n', "\n", $text)
         );
     }
 
@@ -59,7 +62,7 @@ class Lesson extends Model
     {
         return $query->when(
             $level,
-            fn ($q) => $q->where('level', $level)
+            fn($q) => $q->where('level', $level)
         );
     }
 
@@ -67,7 +70,7 @@ class Lesson extends Model
     {
         return $query->when(
             $category_id,
-            fn ($q) => $q->where('category_id', $category_id)
+            fn($q) => $q->where('category_id', $category_id)
         );
     }
 
@@ -75,9 +78,9 @@ class Lesson extends Model
     {
         return $query->when(
             $only_started && $user,
-            fn ($q) => $q->whereHas(
+            fn($q) => $q->whereHas(
                 'users',
-                fn ($q) => $q->where('user_id', $user->id)
+                fn($q) => $q->where('user_id', $user->id)
             )
         );
     }
@@ -86,7 +89,7 @@ class Lesson extends Model
     {
         return $query->when(
             $not_started && $user,
-            fn ($q) => $q->whereDoesntHave('users', function ($q) use ($user) {
+            fn($q) => $q->whereDoesntHave('users', function ($q) use ($user) {
                 $q->where('users.id', $user->id);
             })
         );
@@ -96,7 +99,7 @@ class Lesson extends Model
     {
         return $query->when(
             $status && $user,
-            fn ($q) => $q->whereHas('users', function ($q) use ($user, $status) {
+            fn($q) => $q->whereHas('users', function ($q) use ($user, $status) {
                 $q->where('users.id', $user->id)
                     ->where('lesson_user.status', $status);
             })
@@ -107,7 +110,7 @@ class Lesson extends Model
     {
         return $query->when(
             $search,
-            fn ($q) => $q->where(function ($q) use ($search) {
+            fn($q) => $q->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
                     ->orWhere('text', 'like', "%{$search}%");
@@ -119,13 +122,21 @@ class Lesson extends Model
     {
         return $query->when(
             $latest && $user,
-            fn ($q) => $q
+            fn($q) => $q
                 ->join('lesson_user', function ($join) use ($user) {
                     $join->on('lessons.id', '=', 'lesson_user.lesson_id')
                         ->where('lesson_user.user_id', $user->id);
                 })
                 ->orderByDesc('lesson_user.created_at')
                 ->select('lessons.*')
+        );
+    }
+
+    public function scopeIsFree($query, ?bool $is_free)
+    {
+        return $query->when(
+            !is_null($is_free),
+            fn($q) => $q->where('is_free', $is_free)
         );
     }
 }
