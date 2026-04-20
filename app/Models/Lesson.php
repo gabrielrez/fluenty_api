@@ -113,7 +113,8 @@ class Lesson extends Model
             fn($q) => $q->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhere('text', 'like', "%{$search}%");
+                    ->orWhere('text', 'like', "%{$search}%")
+                    ->orWhere('source', 'like', "%{$search}%");
             })
         );
     }
