@@ -6,6 +6,7 @@ use App\Enums\LessonUserStatus;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\Services\LessonService;
+use App\Services\SequenceService;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller
@@ -44,6 +45,10 @@ class LessonController extends Controller
             $request->user(),
             $lesson
         );
+
+        if ($completed) {
+            app(SequenceService::class)->handle($request->user());
+        }
 
         return response()->json([
             'completed' => $completed,

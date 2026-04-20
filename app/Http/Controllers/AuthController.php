@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
+use App\Services\SequenceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -29,6 +30,8 @@ class AuthController extends Controller
         if (! $user || ! Hash::check($validated['password'], $user->password)) {
             return $this->failUnauthorized('Invalid credentials');
         }
+
+        app(SequenceService::class)->checkAndResetIfNeeded($user);
 
         return $this->respond([
             'user' => $user,

@@ -20,6 +20,7 @@ class User extends Authenticatable
         'email',
         'password',
         'sequence',
+        'last_sequence_at',
         'avatar',
     ];
 
@@ -33,13 +34,14 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'sequence' => 'integer',
+            'last_sequence_at' => 'datetime',
         ];
     }
 
     protected function password(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => Hash::needsRehash($value)
+            set: fn($value) => Hash::needsRehash($value)
                 ? Hash::make($value)
                 : $value
         );

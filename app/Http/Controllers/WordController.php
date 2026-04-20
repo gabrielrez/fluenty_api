@@ -6,6 +6,7 @@ use App\Http\Requests\WordSaveRequest;
 use App\Http\Requests\WordTranslateRequest;
 use App\Http\Resources\SavedWordResourse;
 use App\Models\SavedWord;
+use App\Services\SequenceService;
 use App\Services\WordService;
 use Illuminate\Http\Request;
 
@@ -59,6 +60,8 @@ class WordController extends Controller
         $request->user()
             ->savedWords()
             ->firstOrCreate($request->validated());
+
+        app(SequenceService::class)->handle($request->user());
 
         return $this->respond('Word saved');
     }
