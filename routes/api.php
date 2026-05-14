@@ -9,7 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/ping', fn () => response()->json('pong'));
+Route::get('/ping', fn() => response()->json('pong'));
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [AuthController::class, 'register']);
@@ -20,7 +20,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::post('/words/translate', [WordController::class, 'translate']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/auth/check', fn () => response()->json(true));
+    Route::get('/auth/check', fn() => response()->json(true));
 
     Route::get('/categories', [CategoryController::class, 'index']);
 
@@ -47,4 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', [UserController::class, 'profile']);
     Route::put('/me/update', [UserController::class, 'update']);
+
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::post('/lessons', [LessonController::class, 'store']);
+    });
 });

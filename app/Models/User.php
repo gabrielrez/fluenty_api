@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\LessonUserStatus;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,6 +23,7 @@ class User extends Authenticatable
         'sequence',
         'last_sequence_at',
         'avatar',
+        'role',
     ];
 
     protected $hidden = [
@@ -35,6 +37,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'sequence' => 'integer',
             'last_sequence_at' => 'datetime',
+            'role' => UserRole::class,
         ];
     }
 
@@ -67,5 +70,10 @@ class User extends Authenticatable
     public function inProgressLessons()
     {
         return $this->lessons()->wherePivot('status', LessonUserStatus::InProgress->value);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === UserRole::Admim;
     }
 }

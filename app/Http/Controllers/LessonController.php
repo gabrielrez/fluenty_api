@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\LessonUserStatus;
+use App\Http\Requests\LessonStoreRequest;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\Services\LessonService;
@@ -28,6 +29,13 @@ class LessonController extends Controller
     public function show(Lesson $lesson)
     {
         return $this->respond(new LessonResource($lesson));
+    }
+
+    public function store(LessonStoreRequest $request)
+    {
+        $lesson = Lesson::create($request->validated());
+
+        return $this->respondCreated(new LessonResource($lesson));
     }
 
     public function start(Request $request, Lesson $lesson)
